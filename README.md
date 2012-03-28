@@ -1,6 +1,12 @@
-# relational_redis
+# NoSQL 2 SQL 
 
 An experimental SQL reverse engineering tool for nosql databases (currently Redis)
+
+## Description
+	Configure one to many 'Indexer' threads which will build python data structures representing the object relational state of a redis database
+	These index's run on a defined schedule to stay current with changing data and implied schema
+	Run batch processes to generate both DDL and DML from these indexers on demand   
+	Its intended use case is a batch 'dump' of a nosql database into a relational model to facilitate reporting and integration with legacy tools
 
 ## Installation
 
@@ -8,41 +14,36 @@ An experimental SQL reverse engineering tool for nosql databases (currently Redi
 
 ## Getting Started
 
-	TBD    
+### Configuration	
+	Edit db.ini to specify your nosql database (currently redis supported), specify the timing of your index rebuild and pass in the regex's that match the objects 
+	the engine should consider as entities, index's and foreign keys.      
+
+### Run 
+	$> python indexer.py
 
 ## Notes
-* Relies on patters established by Kevin Manleys redisql client (https://github.com/kmanley/redisql.git)
-* 'Rows' are assumes to be of the name <entity>:<id>
-* 'Index's' are assumed to be of name <entity>_<column>
-* 'Primary Key' is assumed to be <enity>_id
+* Assumes 'entities' are hashmaps
+* Assumes 'indexes' are sets
 
 ## Roadmap
 
 This is currently a very bare-bones implementation. Contributions are encouraged!
 
-The following are on the roadmap:
+The following is on the roadmap:
+* Data Type indentification
+* NULL / NOT NULL indentification
+* Multi key indexes
+* Add FK support
+* Data migration   
+* This solution may not scale well to complex or large databases. As such additional optionality and control options around the indexing is planned 
+* Additional support for other nosql databases 
+* Tested with SQL Server, extensions to other output RDBMS 
+* Better IPC (Vs Pickle used today)
 
-* potential re-engineering of the patterns in the notes above (dependent on https://github.com/kmanley/redisql.git))
-* data type identification 
-* dml creation 
+## Author
+NoSQL 2 SQL is developed and maintained by Thomas Place (thomas.place@gmail.com)
+It can be found here: https://github.com/tomplace/nosql2sql.git
 
-Author
-------
-relational_redis is developed and maintained by Thomas Place (thomas.place@gmail.com)
-
-It can be found here: https://github.com/tomplace/relational_redis.git
-
-License
-------
-MIT License (MIT)
-
-relational_redis Copyright (c) 2012 Thomas R. Place
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 
